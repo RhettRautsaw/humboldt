@@ -593,7 +593,7 @@ humboldt.niche.similarity <- function(z1, z2, correct.env = F, nae = "NO", thres
 #' niche.equiv<- humboldt.equivalence.stat(z1,z2,rep=10,kern.smooth=1, ncores=2)
 
 humboldt.equivalence.stat <- function(z1, z2, rep = 100, correct.env = T, kern.smooth = 1, nae = "YES", 
-    thresh.espace.z = 0.001, run.silent.equ = F, ncores=1) {
+    thresh.espace.z = 0.001, run.silent.equ = T, ncores=1) {
 	if (ncores == "ALL"){ncores = "All"}
 	if (ncores == "all"){ncores = "All"}
 	if (nae == "yes"){ncores = "YES"}
@@ -719,7 +719,7 @@ equivalency.iter<- function(repi, z1, z2, nacinZ, threshinZ, kern.smoothinZ, Rin
 #' bg.sp1tosp2<-humboldt.background.stat(g2e=zz, rep = 100, sim.dir = 1, env.reso=0.41666669, kern.smooth = 1, correct.env = F, R = 100, run.silent.bak = F)
 #' bg.sp2tosp1<-humboldt.background.stat(g2e=zz, rep = 100, sim.dir = 2, env.reso=0.41666669, kern.smooth = 1, correct.env = F, R = 100, run.silent.bak = F)
 humboldt.background.stat<- function(g2e, rep = 100, sim.dir = 1, env.reso, kern.smooth = 1, R = 100,
-    correct.env = F, thresh.espace.z = 0.001, force.equal.sample=F, run.silent.bak = F, ncores=1) {
+    correct.env = F, thresh.espace.z = 0.001, force.equal.sample=F, run.silent.bak = T, ncores=1) {
 	if (ncores == "ALL"){ncores = "All"}
 	if (ncores == "all"){ncores = "All"}
 	if (kern.smooth == "AUTO"){kern.smooth = "auto"}
@@ -1266,7 +1266,7 @@ humboldt.plot.density <- function(x, type = "D", title = "Background") {
 #' occ.sp1<-humboldt.occ.rarefy(in.pts=occ.sp1,colxy=2:3, rarefy.dist = 50, rarefy.units = "km")
 #' occ.sp2<-humboldt.occ.rarefy(in.pts=occ.sp2,colxy=2:3, rarefy.dist = 50, rarefy.units = "km")
 
-humboldt.occ.rarefy <- function(in.pts, colxy = 2:3, rarefy.dist = 0, rarefy.units = "km", run.silent.rar = F) {
+humboldt.occ.rarefy <- function(in.pts, colxy = 2:3, rarefy.dist = 0, rarefy.units = "km", run.silent.rar = T) {
     switch(Sys.info()[['sysname']],
        Windows= {userOS=1},
        Linux  = {userOS=2},
@@ -1392,7 +1392,7 @@ humboldt.occ.rarefy <- function(in.pts, colxy = 2:3, rarefy.dist = 0, rarefy.uni
 #' occ.sp2<-na.exclude(humboldt.sample.spp(dfsp=occ.sp2,colspxy=2:3,colspkept=NULL,dfvar=env2,colvarxy=1:2,colvar="all",resolution=env.reso))
 
 humboldt.sample.spp <- function(dfsp, colspxy = 2:3, colspkept = "xy", dfvar, colvarxy = 1:2, 
-    colvar = "all", resolution, run.silent.sam = F) {
+    colvar = "all", resolution, run.silent.sam = T) {
 
     switch(Sys.info()[['sysname']],
        Windows= {userOS=1},
@@ -1773,7 +1773,7 @@ humboldt.plot.overlap <- function(in.g2e = zz, pdfname = "OverLapPlot.pdf", pdf.
 #' zz=humboldt.g2e(env1=env1, env2=env2, sp1=occ.sp1, sp2=occ.sp2, reduce.env = 2, reductype = "PCA", non.analogous.environments = "NO", env.trim= T, env.trim.type= "MCP", e.var=c(3:21),  col.env = e.var, trim.buffer.sp1 = 200, trim.buffer.sp2 = 200, rarefy.dist = 50, rarefy.units="km", env.reso=0.41666669, kern.smooth = 1, R = 100, run.silent = F)
 
 humboldt.g2e <- function(env1, env2, sp1, sp2, reduce.env = 2, reductype = "PCA", non.analogous.environments = "NO", nae.window=5,
-    env.trim = T, e.var, col.env = e.var, env.trim.type="MCP", trim.mask1, trim.mask2, trim.buffer.sp1 = 200, trim.buffer.sp2 = 200, pcx=1, pcy=2, rarefy.dist  = 0, rarefy.units = "km" , env.reso, kern.smooth = 1, R = 100, run.silent = F) {
+    env.trim = T, e.var, col.env = e.var, env.trim.type="MCP", trim.mask1, trim.mask2, trim.buffer.sp1 = 200, trim.buffer.sp2 = 200, pcx=1, pcy=2, rarefy.dist  = 0, rarefy.units = "km" , env.reso, kern.smooth = 1, R = 100, run.silent = T) {
 
 	### scrub text parameters lc vs uc
 	if (non.analogous.environments == "Yes"){non.analogous.environments = "YES"}
@@ -1986,10 +1986,10 @@ humboldt.g2e <- function(env1, env2, sp1, sp2, reduce.env = 2, reductype = "PCA"
         print("Rarefying occurence data")
         print("Sp1:")
         occ.sp1 <- humboldt.occ.rarefy(in.pts = sp1, colxy = 2:3, rarefy.dist = rarefy.dist, 
-            rarefy.units=rarefy.units)
+            rarefy.units=rarefy.units, run.silent.rar = run.silent)
         print("Sp2:")
         occ.sp2 <- humboldt.occ.rarefy(in.pts = sp2, colxy = 2:3, rarefy.dist = rarefy.dist, 
-            rarefy.units=rarefy.units)
+            rarefy.units=rarefy.units, run.silent.rar = run.silent)
     }
     if (rarefy.dist == 0) {
         occ.sp1 <- sp1[1:3]
@@ -1999,9 +1999,9 @@ humboldt.g2e <- function(env1, env2, sp1, sp2, reduce.env = 2, reductype = "PCA"
     # environmental datasets resolution should be the resolution of the environmental data grids
     print("Sampling environmental data to occurence data")
     occ.sp1FULL <- na.exclude(humboldt.sample.spp(dfsp = occ.sp1, colspxy = 2:3, colspkept = NULL, 
-        dfvar = env1FULL, colvarxy = 1:2, colvar = "all", resolution = env.reso, run.silent.sam = TRUE))
+        dfvar = env1FULL, colvarxy = 1:2, colvar = "all", resolution = env.reso, run.silent.sam = run.silent))
     occ.sp2FULL <- na.exclude(humboldt.sample.spp(dfsp = occ.sp2, colspxy = 2:3, colspkept = NULL, 
-        dfvar = env2FULL, colvarxy = 1:2, colvar = "all", resolution = env.reso, run.silent.sam = TRUE))
+        dfvar = env2FULL, colvarxy = 1:2, colvar = "all", resolution = env.reso, run.silent.sam = run.silent))
     
     occ.sp1 <- na.exclude(humboldt.sample.spp(dfsp = occ.sp1, colspxy = 2:3, colspkept = NULL, 
         dfvar = env1, colvarxy = 1:2, colvar = "all", resolution = env.reso, run.silent.sam = run.silent))
@@ -2977,7 +2977,7 @@ humboldt.doitall <- function(inname = "DoItAll", env1, env2, sp1, sp2, rarefy.di
     reduce.env = 2, reductype = "PCA", non.analogous.environments = "NO", nae.window=5, env.trim= T, env.trim.type="MCP", trim.mask1, trim.mask2, trim.buffer.sp1 = 200, trim.buffer.sp2 = 200, 
     color.ramp=1, correct.env = T, pcx=1, pcy=2, col.env = e.var, e.var, R = 100, kern.smooth = 1, 
     e.reps = 100, b.reps = 100, b.force.equal.sample=F, nae = "YES", 
-    thresh.espace.z = 0.0001, p.overlap = T, p.boxplot = F, p.scatter = F, run.silent = F, ncores=1) {
+    thresh.espace.z = 0.0001, p.overlap = T, p.boxplot = F, p.scatter = F, run.silent = T, ncores=1) {
     
     l <- list()
     inname<<-inname
@@ -4115,7 +4115,7 @@ if (col == 4) {
 #' humboldt.accessible.e.distance(env1=env1, env2=env2, sp1=occ.sp1, sp2=occ.sp2, env.trim= T, env.trim.type="RADIUS", e.var=c(3:21), rarefy.dist = 50, rarefy.units="km", env.reso=0.41666669, kern.smooth = 1, R = 100, rep=100, min.d=5, max.d=1000, n.interval=10, nae = "YES", thresh.espace.z = 0.001, correct.env = T, force.equal.sample=T, ncores=2, run.silent = F)
 
 
-humboldt.accessible.e.distance <- function(env1=env1, env2=env2, sp1=occ.sp1, sp2=occ.sp2, env.trim= T, env.trim.type="RADIUS", e.var=c(3:21), rarefy.dist = 50, rarefy.units="km", env.reso=0.41666669, kern.smooth = 1, R = 100, rep=100, min.d=5,max.d=1000, n.interval=10, nae = "YES", thresh.espace.z = 0.001, correct.env = T, force.equal.sample=T, ncores=1, run.silent = F) {
+humboldt.accessible.e.distance <- function(env1=env1, env2=env2, sp1=occ.sp1, sp2=occ.sp2, env.trim= T, env.trim.type="RADIUS", e.var=c(3:21), rarefy.dist = 50, rarefy.units="km", env.reso=0.41666669, kern.smooth = 1, R = 100, rep=100, min.d=5,max.d=1000, n.interval=10, nae = "YES", thresh.espace.z = 0.001, correct.env = T, force.equal.sample=T, ncores=1, run.silent = T) {
 col.env = e.var
 threshinZ <- thresh.espace.z
 nacinZ <- nae
