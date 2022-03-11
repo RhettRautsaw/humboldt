@@ -1925,7 +1925,7 @@ humboldt.g2e <- function(env1, env2, sp1, sp2, reduce.env = 2, reductype = "PCA"
         # Sp2
         env2in <- env2
         env2T <- SpatialPoints(env2in, CRS("+proj=longlat +datum=WGS84"))
-		env2T <- env1T[!is.na(over(env2T,as(trim.mask2,"SpatialPolygons"))),]	
+		env2T <- env2T[!is.na(over(env2T,as(trim.mask2,"SpatialPolygons"))),]	
         env2 <- as.data.frame(env2T)
         options(warn = 0)
     }
